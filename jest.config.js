@@ -6,7 +6,22 @@ const config = {
   // Setup files
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   
-  // Module name mapping for path aliases
+  // Use ts-jest for TypeScript files
+  preset: 'ts-jest/presets/js-with-ts',
+  
+  // Transform configuration
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest',
+  },
+  
+  // TS-Jest configuration
+  globals: {
+    'ts-jest': {
+      tsconfig: {
+        jsx: 'react-jsx',
+      },
+    },
+  },
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/lib/(.*)$': '<rootDir>/lib/$1',
@@ -52,11 +67,6 @@ const config = {
     'html',
     'json-summary'
   ],
-  
-  // Transform configuration
-  transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest']
-  },
   
   // Module file extensions
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],

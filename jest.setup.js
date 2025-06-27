@@ -3,8 +3,8 @@
  * Global test setup and mocks for EcoSentinel
  */
 
-import '@testing-library/jest-dom';
-import 'jest-canvas-mock';
+require('@testing-library/jest-dom');
+require('jest-canvas-mock');
 
 // Mock Next.js router
 jest.mock('next/router', () => ({

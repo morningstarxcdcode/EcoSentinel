@@ -19,7 +19,7 @@
         "name": "next"
       }
     ],
-    "types": ["jest", "@testing-library/jest-dom"],
+    "types": ["jest", "@testing-library/jest-dom", "./types/test-globals"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
@@ -27,6 +27,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",

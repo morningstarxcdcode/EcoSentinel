@@ -27,9 +27,9 @@ export interface QuantumPrediction {
 
 class QuantumEnvironmentalAI {
   private quantumModels: Map<string, QuantumEnvironmentalModel> = new Map();
-  private quantumProcessor: QuantumProcessor;
-  private classicalFallback: ClassicalProcessor;
-  private hybridOptimizer: HybridQuantumClassical;
+  private quantumProcessor!: QuantumProcessor;
+  private classicalFallback!: ClassicalProcessor;
+  private hybridOptimizer!: HybridQuantumClassical;
 
   constructor() {
     this.initializeQuantumAI();

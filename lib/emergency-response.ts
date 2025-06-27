@@ -307,6 +307,114 @@ class EmergencyResponseSystem {
   }
 
   /**
+   * Create marine emergency event
+   */
+  private async createMarineEmergency(marineData: any): Promise<EmergencyEvent> {
+    const emergencyId = `marine_${Date.now()}`;
+    const affectedRadius = this.calculateMarineRadius(marineData.severity);
+    const affectedPopulation = await this.estimateAffectedPopulation(marineData.location, affectedRadius);
+
+    return {
+      id: emergencyId,
+      type: 'marine_disaster',
+      severity: marineData.severity,
+      location: {
+        ...marineData.location,
+        affectedRadius: affectedRadius
+      },
+      detectedAt: new Date().toISOString(),
+      description: `Marine disaster detected - ${this.getMarineDisasterDescription(marineData.indicators)}`,
+      aiConfidence: marineData.confidence,
+      affectedPopulation: affectedPopulation,
+      environmentalImpact: {
+        airQuality: 30,
+        waterQuality: 95, // Severe impact on water
+        soilContamination: 40,
+        wildlifeImpact: 90 // Severe impact on marine life
+      },
+      responseActions: await this.generateMarineResponse(marineData),
+      evacuationZones: [],
+      status: 'active'
+    };
+  }
+
+  /**
+   * Create weather emergency event
+   */
+  private async createWeatherEmergency(weatherData: any): Promise<EmergencyEvent> {
+    const emergencyId = `weather_${Date.now()}`;
+    const affectedRadius = this.calculateWeatherRadius(weatherData.severity);
+    const affectedPopulation = await this.estimateAffectedPopulation(weatherData.location, affectedRadius);
+
+    return {
+      id: emergencyId,
+      type: 'extreme_weather',
+      severity: weatherData.severity,
+      location: {
+        ...weatherData.location,
+        affectedRadius: affectedRadius
+      },
+      detectedAt: new Date().toISOString(),
+      description: `Extreme weather event detected - ${this.getWeatherDescription(weatherData.indicators)}`,
+      aiConfidence: weatherData.confidence,
+      affectedPopulation: affectedPopulation,
+      environmentalImpact: {
+        airQuality: 60,
+        waterQuality: 50,
+        soilContamination: 30,
+        wildlifeImpact: 70
+      },
+      responseActions: await this.generateWeatherResponse(weatherData),
+      evacuationZones: [],
+      status: 'active'
+    };
+  }
+
+  /**
+   * Calculate marine disaster radius
+   */
+  private calculateMarineRadius(severity: string): number {
+    switch (severity) {
+      case 'critical': return 50; // 50 km
+      case 'high': return 30;
+      case 'medium': return 15;
+      default: return 10;
+    }
+  }
+
+  /**
+   * Calculate weather emergency radius
+   */
+  private calculateWeatherRadius(severity: string): number {
+    switch (severity) {
+      case 'critical': return 100; // 100 km
+      case 'high': return 60;
+      case 'medium': return 30;
+      default: return 15;
+    }
+  }
+
+  /**
+   * Get marine disaster description
+   */
+  private getMarineDisasterDescription(indicators: any): string {
+    const activeIndicators = Object.entries(indicators)
+      .filter(([, value]) => value)
+      .map(([key]) => key);
+    return activeIndicators.join(', ');
+  }
+
+  /**
+   * Get weather description
+   */
+  private getWeatherDescription(indicators: any): string {
+    const activeIndicators = Object.entries(indicators)
+      .filter(([, value]) => value)
+      .map(([key]) => key);
+    return activeIndicators.join(', ');
+  }
+
+  /**
    * Generate wildfire response actions
    */
   private async generateWildfireResponse(wildfireData: any): Promise<ResponseAction[]> {
@@ -388,6 +496,40 @@ class EmergencyResponseSystem {
     });
 
     return actions;
+  }
+
+  /**
+   * Generate marine response actions
+   */
+  private async generateMarineResponse(marineData: any): Promise<ResponseAction[]> {
+    return [
+      {
+        id: `marine_response_${Date.now()}`,
+        type: 'containment',
+        priority: 'immediate',
+        description: 'Deploy marine response teams',
+        assignedTo: ['Coast Guard', 'Environmental Agency'],
+        status: 'pending',
+        estimatedDuration: 240
+      }
+    ];
+  }
+
+  /**
+   * Generate weather response actions
+   */
+  private async generateWeatherResponse(weatherData: any): Promise<ResponseAction[]> {
+    return [
+      {
+        id: `weather_response_${Date.now()}`,
+        type: 'monitoring',
+        priority: 'urgent',
+        description: 'Monitor weather conditions and issue warnings',
+        assignedTo: ['Weather Service', 'Emergency Management'],
+        status: 'pending',
+        estimatedDuration: 480
+      }
+    ];
   }
 
   /**

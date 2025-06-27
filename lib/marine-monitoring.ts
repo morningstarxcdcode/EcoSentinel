@@ -579,7 +579,7 @@ class MarineMonitoringSystem {
     return -0.1 + (Math.random() - 0.5) * 0.05;
   }
 
-  private calculateTemperatureAnomaly(lat: number, lon: longitude): number {
+  private calculateTemperatureAnomaly(lat: number, lon: number): number {
     // Ocean temperature anomaly
     return 1.5 + (Math.random() - 0.5) * 1;
   }

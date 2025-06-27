@@ -71,7 +71,8 @@ test.describe('🌍 EcoSentinel Dashboard', () => {
     
     // Check that recommendations are displayed
     const recommendations = page.locator('[data-testid="recommendation-item"]');
-    await expect(recommendations).toHaveCountGreaterThan(0);
+    await expect(recommendations).toHaveCount(await recommendations.count());
+    expect(await recommendations.count()).toBeGreaterThan(0);
     
     // Check recommendation content
     const firstRec = recommendations.first();
