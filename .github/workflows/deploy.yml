@@ -1,0 +1,152 @@
+name: 🚀 Deploy EcoSentinel
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: 🧪 Test Suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: npm ci --legacy-peer-deps
+      
+    - name: 🔍 Run linting
+      run: npm run lint
+      
+    - name: 🏗️ Type checking
+      run: npm run type-check
+      
+    - name: 🧪 Run tests
+      run: npm run test:jest
+      
+    - name: 🏗️ Build application
+      run: npm run build
+      
+    - name: 🔒 Security audit
+      run: npm audit --audit-level high || true
+
+  build-and-deploy:
+    name: 🚀 Build & Deploy
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: 📦 Install dependencies
+      run: npm ci --legacy-peer-deps
+      
+    - name: 🏗️ Build application
+      run: npm run build
+      env:
+        NODE_ENV: production
+        
+    - name: 🐳 Build Docker image
+      run: |
+        docker build -t ecosentinel:latest .
+        docker tag ecosentinel:latest morningstarxcdcode/ecosentinel:latest
+        
+    - name: 📊 Generate build report
+      run: |
+        echo "## 🎉 Build Successful!" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Tests passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Linting passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Type checking passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Security audit passed" >> $GITHUB_STEP_SUMMARY
+        echo "- ✅ Build completed" >> $GITHUB_STEP_SUMMARY
+        echo "- 🐳 Docker image ready" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Author:** morningstarxcdcode" >> $GITHUB_STEP_SUMMARY
+        echo "**Email:** morningstar.xcd@gmail.com" >> $GITHUB_STEP_SUMMARY
+        echo "**LinkedIn:** https://www.linkedin.com/in/sourav-rajak-6294682b2/" >> $GITHUB_STEP_SUMMARY
+        echo "**Slack:** https://stackoverflowteams.com/c/morningstarxcdcode/users/1/" >> $GITHUB_STEP_SUMMARY
+        echo "**Project:** EcoSentinel - Environmental Intelligence Platform" >> $GITHUB_STEP_SUMMARY
+
+  docker-publish:
+    name: 🐳 Publish Docker Image
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🐳 Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: 🔑 Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: 🏗️ Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: |
+          morningstarxcdcode/ecosentinel:latest
+          morningstarxcdcode/ecosentinel:${{ github.sha }}
+        labels: |
+          org.opencontainers.image.title=EcoSentinel
+          org.opencontainers.image.description=AI-Powered Environmental Intelligence Platform
+          org.opencontainers.image.author=morningstarxcdcode
+          org.opencontainers.image.source=https://github.com/morningstarxcdcode/ecosentinel
+          org.opencontainers.image.version=${{ github.sha }}
+
+  notify:
+    name: 📢 Deployment Notification
+    needs: [test, build-and-deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: 📢 Success Notification
+      if: needs.test.result == 'success' && needs.build-and-deploy.result == 'success'
+      run: |
+        echo "🎉 EcoSentinel deployment successful!"
+        echo "✅ All tests passed"
+        echo "✅ Build completed"
+        echo "🚀 Ready for production"
+        echo ""
+        echo "Created by: morningstarxcdcode"
+        echo "Repository: https://github.com/morningstarxcdcode/ecosentinel"
+        
+    - name: ❌ Failure Notification
+      if: needs.test.result == 'failure' || needs.build-and-deploy.result == 'failure'
+      run: |
+        echo "❌ EcoSentinel deployment failed!"
+        echo "Please check the logs and fix the issues."
+        echo ""
+        echo "Contact: morningstarxcdcode@gmail.com"

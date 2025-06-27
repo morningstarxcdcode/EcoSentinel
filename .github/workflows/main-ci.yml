@@ -8,6 +8,8 @@ on:
 
 env:
   NODE_VERSION: '18.x'
+  CI: true
+  HUSKY: 0
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

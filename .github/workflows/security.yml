@@ -1,0 +1,24 @@
+name: 🔒 Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 6 * * 1'
+
+jobs:
+  security-scan:
+    name: 🔒 Security Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: CodeQL Analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript,typescript
+      
+      - uses: github/codeql-action/analyze@v3

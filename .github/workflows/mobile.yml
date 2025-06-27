@@ -1,0 +1,54 @@
+name: 📱 Mobile CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths: [ 'mobile/**' ]
+  pull_request:
+    branches: [ main, develop ]
+    paths: [ 'mobile/**' ]
+
+jobs:
+  ios-build:
+    name: 🍎 iOS Build & Test
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      
+      - name: Install dependencies
+        run: |
+          cd mobile/ios
+          npm install
+          pod install
+      
+      - name: Build iOS app
+        run: |
+          cd mobile/ios
+          xcodebuild -workspace EcoSentinel.xcworkspace -scheme EcoSentinel -configuration Release build
+
+  android-build:
+    name: 🤖 Android Build & Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      
+      - name: Build Android app
+        run: |
+          cd mobile/android
+          ./gradlew assembleRelease

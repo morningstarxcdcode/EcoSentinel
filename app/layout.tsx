@@ -18,6 +18,7 @@ import { Footer } from '@/components/layout/Footer'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
+  metadataBase: new URL('https://ecosentinel.vercel.app'),
   title: 'EcoSentinel - AI-Powered Environmental Monitoring',
   description: 'Real-time environmental monitoring and AI-powered climate action platform',
   keywords: 'climate, environment, AI, monitoring, sustainability, hackathon',

@@ -1,0 +1,167 @@
+name: 🚀 EcoSentinel CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, 'feature/*', 'hotfix/*' ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 2 * * *' # Daily at 2 AM UTC
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+env:
+  NODE_VERSION: '18.x'
+  DOCKER_REGISTRY: ghcr.io
+  IMAGE_NAME: morningstarxcdcode/ecosentinel
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  setup:
+    name: 🔧 Setup & Validation
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📊 Set Version
+        id: version
+        run: |
+          VERSION=$(date +%Y.%m.%d)-${GITHUB_SHA::8}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "🏷️ Version: $VERSION"
+
+      - name: 🌍 Determine Environment
+        id: env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "environment=production" >> $GITHUB_OUTPUT
+          else
+            echo "environment=staging" >> $GITHUB_OUTPUT
+          fi
+
+  code-quality:
+    name: 🔍 Code Quality & Security
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 15
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: 🔍 ESLint Analysis
+        run: npm run lint
+
+      - name: 🎨 Prettier Check
+        run: npm run format:check
+
+      - name: 📊 TypeScript Check
+        run: npm run type-check
+
+      - name: 🔒 Security Audit
+        run: npm audit --audit-level=high || true
+        timeout-minutes: 5
+
+  test-frontend:
+    name: 🧪 Frontend Testing
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 15
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: 🧪 Run Tests
+        run: npm run test:jest
+
+      - name: 📊 Upload Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+
+  build:
+    name: 🏗️ Build Application
+    runs-on: ubuntu-latest
+    needs: [setup, code-quality, test-frontend]
+    timeout-minutes: 15
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: 🏗️ Build Application
+        run: npm run build
+
+      - name: 📊 Build Summary
+        run: |
+          echo "## 🏗️ Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ needs.setup.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment:** ${{ needs.setup.outputs.environment }}" >> $GITHUB_STEP_SUMMARY
+
+  deploy:
+    name: 🚀 Deploy Application
+    runs-on: ubuntu-latest
+    needs: [setup, build]
+    timeout-minutes: 10
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    environment:
+      name: ${{ needs.setup.outputs.environment }}
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🚀 Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+
+      - name: ✅ Deployment Success
+        run: |
+          echo "🎉 Deployment completed successfully!"
+          echo "🌍 Environment: ${{ needs.setup.outputs.environment }}"
