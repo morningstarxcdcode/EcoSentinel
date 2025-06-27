@@ -255,7 +255,7 @@ Core components will be open-sourced for community contribution.
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/ecosentinel.git
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git
 cd ecosentinel
 
 # Quick start with Docker
@@ -268,7 +268,7 @@ npm run dev
 ```
 
 **Live Demo:** [https://ecosentinel.vercel.app](https://ecosentinel.vercel.app)  
-**GitHub:** [https://github.com/username/ecosentinel](https://github.com/username/ecosentinel)  
+**GitHub:** [https://github.com/morningstarxcdcode/EcoSentinel](https://github.com/morningstarxcdcode/EcoSentinel)  
 **Documentation:** [https://docs.ecosentinel.com](https://docs.ecosentinel.com)
 
 ---

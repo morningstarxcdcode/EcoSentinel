@@ -56,11 +56,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/username/ecosentinel.git"
+    "url": "https://github.com/morningstarxcdcode/EcoSentinel.git"
   },
-  "homepage": "https://github.com/morningstarxcdcode/ecosentinel#readme",
+  "homepage": "https://github.com/morningstarxcdcode/EcoSentinel#readme",
   "bugs": {
-    "url": "https://github.com/morningstarxcdcode/ecosentinel/issues",
+    "url": "https://github.com/morningstarxcdcode/EcoSentinel/issues",
     "email": "morningstar.xcd@gmail.com"
   },
   "keywords": [

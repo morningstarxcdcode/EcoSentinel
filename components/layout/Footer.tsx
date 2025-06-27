@@ -35,7 +35,7 @@ export function Footer() {
   }
 
   const socialLinks = [
-    { name: 'GitHub', href: 'https://github.com/username/ecosentinel', icon: Github },
+    { name: 'GitHub', href: 'https://github.com/morningstarxcdcode/EcoSentinel', icon: Github },
     { name: 'Twitter', href: 'https://twitter.com/ecosentinel', icon: Twitter },
     { name: 'LinkedIn', href: 'https://linkedin.com/company/ecosentinel', icon: Linkedin },
     { name: 'Email', href: 'mailto:hello@ecosentinel.com', icon: Mail },
