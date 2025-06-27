@@ -22,11 +22,11 @@ Thank you for your interest in contributing to EcoSentinel! We're building the f
 ### **1. Fork and Clone**
 ```bash
 # Fork the repository on GitHub, then:
-git clone https://github.com/YOUR_USERNAME/ecosentinel.git
+git clone https://github.com/YOUR_USERNAME/EcoSentinel.git
 cd ecosentinel
 
 # Add upstream remote
-git remote add upstream https://github.com/original-owner/ecosentinel.git
+git remote add upstream https://github.com/morningstarxcdcode/EcoSentinel.git
 ```
 
 ### **2. Set Up Development Environment**

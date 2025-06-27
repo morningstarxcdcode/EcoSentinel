@@ -64,7 +64,7 @@ analytics
 
 ## 🚀 **Quick Start**
 ```bash
-git clone https://github.com/morningstarxcdcode/ecosentinel.git
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git
 cd ecosentinel
 npm install
 npm run dev

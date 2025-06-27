@@ -25,7 +25,7 @@ This guide provides step-by-step instructions for different types of users to in
 ### **Steps**
 ```bash
 # 1. Clone the repository
-git clone https://github.com/morningstarxcdcode/ecosentinel.git
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git
 cd ecosentinel
 
 # 2. Install dependencies
@@ -103,7 +103,7 @@ choco install nodejs python postgresql redis-64 git
 ### **Step 2: Clone and Setup**
 ```bash
 # Clone repository
-git clone https://github.com/morningstarxcdcode/ecosentinel.git
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git
 cd ecosentinel
 
 # Install Node.js dependencies
@@ -235,7 +235,7 @@ sudo chown $USER:$USER /var/www/ecosentinel
 
 # Clone and setup
 cd /var/www/ecosentinel
-git clone https://github.com/morningstarxcdcode/ecosentinel.git .
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git .
 npm install
 pip3 install -r ai/requirements.txt
 
@@ -409,7 +409,7 @@ choco install docker-desktop
 ### **Step 2: Clone and Configure**
 ```bash
 # Clone repository
-git clone https://github.com/morningstarxcdcode/ecosentinel.git
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git
 cd ecosentinel
 
 # Copy environment file

@@ -97,7 +97,7 @@ Get EcoSentinel running in under 5 minutes:
 
 ```bash
 # Clone the repository
-git clone https://github.com/morningstarxcdcode/ecosentinel.git
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git
 cd ecosentinel
 
 # Install dependencies
@@ -210,7 +210,7 @@ EcoSentinel uses a modern, scalable microservices architecture:
 
 ### **Step 1: Clone Repository**
 ```bash
-git clone https://github.com/morningstarxcdcode/ecosentinel.git
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git
 cd ecosentinel
 ```
 
@@ -490,7 +490,7 @@ We welcome contributions! Here's how to get started:
 
 ### **1. Fork & Clone**
 ```bash
-git clone https://github.com/morningstarxcdcode/ecosentinel.git
+git clone https://github.com/morningstarxcdcode/EcoSentinel.git
 cd ecosentinel
 ```
 
