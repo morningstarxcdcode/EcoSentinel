@@ -38,6 +38,16 @@ const config = {
     '<rootDir>/**/*.(test|spec).{js,jsx,ts,tsx}'
   ],
   
+  // Exclude E2E tests which should run with Playwright
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/.next/',
+    '/e2e/',
+    '/tests/e2e/',
+    '\\.e2e\\.',
+    'dashboard.spec.ts'
+  ],
+  
   // Coverage configuration
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
