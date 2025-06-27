@@ -7,14 +7,16 @@ on:
     branches: [ main ]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '18.x'
   PYTHON_VERSION: '3.9'
+  HUSKY: 0
 
 jobs:
   # Code Quality and Security Checks
   code-quality:
     name: Code Quality & Security
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,6 +43,7 @@ jobs:
   frontend-tests:
     name: Frontend Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -79,6 +82,7 @@ jobs:
   backend-tests:
     name: Backend Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     services:
       postgres:
         image: postgres:15

@@ -20,6 +20,7 @@ on:
 
 env:
   NODE_VERSION: '18.x'
+  HUSKY: 0
   DOCKER_REGISTRY: ghcr.io
   IMAGE_NAME: morningstarxcdcode/ecosentinel
 

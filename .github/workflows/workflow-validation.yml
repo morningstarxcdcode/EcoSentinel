@@ -8,6 +8,9 @@ on:
     paths:
       - '.github/workflows/**'
 
+env:
+  HUSKY: 0
+
 jobs:
   validate-workflows:
     name: 🔍 Validate GitHub Workflows

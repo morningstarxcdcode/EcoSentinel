@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'
 
+env:
+  HUSKY: 0
+
 jobs:
   release:
     name: 🚀 Create Release

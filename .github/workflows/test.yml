@@ -8,11 +8,13 @@ on:
 
 env:
   NODE_VERSION: '18.x'
+  HUSKY: 0
 
 jobs:
   unit-tests:
     name: 🧪 Unit Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -32,6 +34,7 @@ jobs:
   integration-tests:
     name: 🔗 Integration Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     services:
       postgres:
         image: postgres:15
@@ -64,6 +67,7 @@ jobs:
   e2e-tests:
     name: 🎭 E2E Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

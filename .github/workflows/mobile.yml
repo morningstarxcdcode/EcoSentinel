@@ -8,6 +8,9 @@ on:
     branches: [ main, develop ]
     paths: [ 'mobile/**' ]
 
+env:
+  HUSKY: 0
+
 jobs:
   ios-build:
     name: 🍎 iOS Build & Test
@@ -24,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd mobile/ios
-          npm install
+          npm ci --legacy-peer-deps
           pod install
       
       - name: Build iOS app

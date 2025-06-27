@@ -7,7 +7,8 @@ on:
     branches: [ main ]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '18.x'
+  HUSKY: 0
 
 jobs:
   # Code Quality and Tests

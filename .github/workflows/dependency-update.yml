@@ -5,6 +5,9 @@ on:
     - cron: '0 8 * * 1' # Weekly on Monday
   workflow_dispatch:
 
+env:
+  HUSKY: 0
+
 jobs:
   update-dependencies:
     name: 🔄 Update Dependencies

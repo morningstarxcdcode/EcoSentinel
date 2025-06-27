@@ -7,12 +7,14 @@ on:
     branches: [ main ]
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '18.x'
+  HUSKY: 0
 
 jobs:
   test-and-build:
     name: Test and Build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     
     steps:
       - name: Checkout code
@@ -48,6 +50,7 @@ jobs:
   e2e-tests:
     name: E2E Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs: test-and-build
     
     steps:
