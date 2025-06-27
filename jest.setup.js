@@ -175,7 +175,13 @@ global.testUtils = {
   
   // Mock API error
   mockApiError: (error, status = 500) => {
-    fetch.mockRejectedValueOnce(new Error(error));
+    fetch.mockResolvedValueOnce({
+      ok: false,
+      status,
+      statusText: error,
+      json: async () => ({ error }),
+      text: async () => JSON.stringify({ error }),
+    });
   },
   
   // Wait for async operations

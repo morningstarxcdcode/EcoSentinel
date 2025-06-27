@@ -55,7 +55,7 @@ const config = {
   
   // Transform configuration
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }]
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest']
   },
   
   // Module file extensions
@@ -77,12 +77,16 @@ const config = {
   projects: [
     {
       displayName: 'unit',
+      testEnvironment: 'jsdom',
       testMatch: ['<rootDir>/**/*.test.{js,jsx,ts,tsx}'],
-      testPathIgnorePatterns: ['/e2e/', '/integration/']
+      testPathIgnorePatterns: ['/e2e/', '/integration/', '/node_modules/'],
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
     },
     {
       displayName: 'integration',
-      testMatch: ['<rootDir>/tests/integration/**/*.test.{js,jsx,ts,tsx}']
+      testEnvironment: 'jsdom',
+      testMatch: ['<rootDir>/tests/integration/**/*.test.{js,jsx,ts,tsx}'],
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
     }
   ]
 };

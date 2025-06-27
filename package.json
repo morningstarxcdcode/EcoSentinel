@@ -47,7 +47,8 @@
     "test:components": "jest --testPathPattern=components",
     "test:e2e:ui": "playwright test --ui",
     "test:all": "npm run test && npm run test:e2e",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "npm run type-check"
   },
   "repository": {
     "type": "git",
