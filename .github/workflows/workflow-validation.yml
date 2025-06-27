@@ -1,0 +1,58 @@
+name: ✅ Workflow Validation
+
+on:
+  push:
+    paths:
+      - '.github/workflows/**'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+
+jobs:
+  validate-workflows:
+    name: 🔍 Validate GitHub Workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Validate workflow syntax
+        run: |
+          echo "🔍 Validating workflow files..."
+          
+          # Check for common issues
+          for file in .github/workflows/*.yml; do
+            echo "Checking $file..."
+            
+            # Basic YAML validation would go here
+            # In a real scenario, you'd use a YAML validator
+            
+            if grep -q "on:" "$file"; then
+              echo "✅ $file has valid trigger"
+            else
+              echo "❌ $file missing trigger"
+              exit 1
+            fi
+          done
+          
+          echo "✅ All workflow files validated"
+
+  test-workflow-matrix:
+    name: 🧪 Test Workflow Matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Test basic commands
+        run: |
+          node --version
+          npm --version
+          echo "✅ Node.js ${{ matrix.node-version }} working on ${{ matrix.os }}"

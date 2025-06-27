@@ -1,0 +1,16 @@
+config:
+  target: 'http://localhost:3000'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+  defaults:
+    headers:
+      User-Agent: 'EcoSentinel Load Test'
+
+scenarios:
+  - name: 'Basic user flow'
+    flow:
+      - get:
+          url: '/'
+      - get:
+          url: '/api/v1/environmental-data?location=San Francisco'
