@@ -1,5 +1,12 @@
 # 🌍 **EcoSentinel - AI-Powered Environmental Intelligence Platform**
 
+## 🚀 **Deploy Live Demo Now!**
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/morningstarxcdcode/EcoSentinel)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/morningstarxcdcode/EcoSentinel)
+
+> **🎯 Get your live demo in 2 minutes!** Click any button above to deploy your own EcoSentinel instance.
+
 ```
     ███████╗ ██████╗ ██████╗ ███████╗███████╗███╗   ██╗████████╗██╗███╗   ██╗███████╗██╗     
     ██╔════╝██╔════╝██╔═══██╗██╔════╝██╔════╝████╗  ██║╚══██╔══╝██║████╗  ██║██╔════╝██║     

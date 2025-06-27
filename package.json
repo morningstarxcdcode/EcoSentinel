@@ -14,7 +14,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:static": "EXPORT=true next build",
     "start": "next start",
+    "export": "EXPORT=true next build && next export",
+    "deploy:vercel": "vercel --prod",
+    "deploy:github": "npm run build:static",
     "lint": "next lint",
     "lint:check": "next lint",
     "lint:fix": "next lint --fix",

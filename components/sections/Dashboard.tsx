@@ -8,46 +8,52 @@ interface DashboardProps {
 }
 
 export function Dashboard({ data }: DashboardProps) {
+  const getSystemStatus = (riskLevel: string) => {
+    if (riskLevel === 'low') return 'All Systems Operational';
+    if (riskLevel === 'medium') return 'Monitoring Conditions';
+    return 'Environmental Alert';
+  };
+
   const metrics = [
     {
       title: 'Air Quality Index',
       value: data?.airQuality || 75,
       unit: 'AQI',
       icon: Gauge,
-      trend: 'up',
-      change: '+5%',
-      status: 'moderate',
-      color: 'orange'
+      trend: data?.airQuality > 100 ? 'down' : 'up',
+      change: data?.airQualityDescription || 'Moderate',
+      status: data?.airQuality > 100 ? 'poor' : data?.airQuality > 50 ? 'moderate' : 'good',
+      color: data?.airQuality > 100 ? 'red' : data?.airQuality > 50 ? 'orange' : 'green'
     },
     {
       title: 'Temperature',
       value: data?.temperature || 22.5,
       unit: '°C',
       icon: Thermometer,
-      trend: 'down',
-      change: '-2°C',
-      status: 'good',
-      color: 'blue'
+      trend: data?.temperature > 25 ? 'up' : 'down',
+      change: data?.weatherDescription || 'Partly cloudy',
+      status: data?.temperature > 30 || data?.temperature < 0 ? 'poor' : 'good',
+      color: data?.temperature > 30 ? 'red' : data?.temperature < 10 ? 'blue' : 'green'
     },
     {
       title: 'Humidity',
       value: data?.humidity || 65,
       unit: '%',
       icon: Droplets,
-      trend: 'up',
-      change: '+3%',
-      status: 'normal',
-      color: 'teal'
+      trend: data?.humidity > 70 ? 'up' : 'down',
+      change: data?.humidity > 80 ? 'High' : data?.humidity < 30 ? 'Low' : 'Normal',
+      status: data?.humidity > 80 || data?.humidity < 30 ? 'moderate' : 'good',
+      color: data?.humidity > 80 ? 'orange' : 'teal'
     },
     {
       title: 'Wind Speed',
-      value: 12.3,
+      value: data?.windSpeed || 12.3,
       unit: 'km/h',
       icon: Wind,
-      trend: 'up',
-      change: '+1.2',
-      status: 'good',
-      color: 'green'
+      trend: data?.windSpeed > 20 ? 'up' : 'down',
+      change: data?.windSpeed > 30 ? 'Strong' : data?.windSpeed < 5 ? 'Calm' : 'Moderate',
+      status: data?.windSpeed > 50 ? 'poor' : 'good',
+      color: data?.windSpeed > 30 ? 'orange' : 'green'
     }
   ]
 
@@ -103,16 +109,27 @@ export function Dashboard({ data }: DashboardProps) {
           <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-200">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-sm font-medium text-gray-600">Live Data</span>
+                <div className={`w-3 h-3 rounded-full animate-pulse ${
+                  data?.dataSource === 'live' ? 'bg-green-500' : 'bg-orange-500'
+                }`} />
+                <span className="text-sm font-medium text-gray-600">
+                  {data?.dataSource === 'live' ? 'Live Data' : 'Demo Data'}
+                </span>
               </div>
+              {data?.location && (
+                <div className="text-sm text-gray-500">
+                  📍 {data.location.name}, {data.location.country}
+                </div>
+              )}
               <div className="text-sm text-gray-500">
-                Last updated: {new Date().toLocaleTimeString()}
+                Last updated: {data?.lastUpdated ? new Date(data.lastUpdated).toLocaleTimeString() : new Date().toLocaleTimeString()}
               </div>
             </div>
             <div className="flex items-center space-x-2">
               <CheckCircle className="w-5 h-5 text-green-500" />
-              <span className="text-sm font-medium text-gray-600">All Systems Operational</span>
+              <span className="text-sm font-medium text-gray-600">
+                {getSystemStatus(data?.riskLevel || 'low')}
+              </span>
             </div>
           </div>
 

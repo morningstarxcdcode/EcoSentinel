@@ -25,30 +25,57 @@ export default function HomePage() {
   const [environmentalData, setEnvironmentalData] = useState<any>(null)
 
   useEffect(() => {
-    // Simulate initial data loading
-    const loadInitialData = async () => {
+    // Load real environmental data
+    const loadEnvironmentalData = async () => {
       try {
-        // In a real app, this would fetch from your API
-        await new Promise(resolve => setTimeout(resolve, 1500))
+        setIsLoading(true);
         
-        // Mock environmental data
+        // Get user's location if possible
+        let lat = 40.7128; // Default to NYC
+        let lon = -74.0060;
+        
+        if (navigator.geolocation) {
+          try {
+            const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+            });
+            lat = position.coords.latitude;
+            lon = position.coords.longitude;
+          } catch (geoError) {
+            console.log('📍 Geolocation not available, using default location');
+          }
+        }
+        
+        // Fetch real environmental data
+        const response = await fetch(`/api/environmental-data?lat=${lat}&lon=${lon}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch environmental data');
+        }
+        
+        const data = await response.json();
+        console.log('🌍 Environmental data loaded:', data);
+        
+        setEnvironmentalData(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Failed to load environmental data:', error);
+        
+        // Fallback to demo data
         setEnvironmentalData({
-          airQuality: 85,
+          airQuality: 75,
           temperature: 22.5,
           humidity: 65,
           carbonLevel: 410,
           riskLevel: 'low',
-          lastUpdated: new Date().toISOString()
-        })
+          lastUpdated: new Date().toISOString(),
+          dataSource: 'fallback'
+        });
         
-        setIsLoading(false)
-      } catch (error) {
-        console.error('Failed to load initial data:', error)
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    loadInitialData()
+    loadEnvironmentalData();
   }, [])
 
   if (isLoading) {
