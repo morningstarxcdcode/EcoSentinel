@@ -314,7 +314,8 @@ export class SecurityTestSuite {
 
         const cookies = response.headers['set-cookie'];
         if (cookies) {
-          const sessionCookie = cookies.find((cookie: string) => 
+          const cookieArray = Array.isArray(cookies) ? cookies : [cookies];
+          const sessionCookie = cookieArray.find((cookie: string) => 
             cookie.includes('session') || cookie.includes('token')
           );
 

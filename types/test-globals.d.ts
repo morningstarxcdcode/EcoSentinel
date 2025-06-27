@@ -3,7 +3,7 @@
  */
 
 interface TestUtils {
-  mockApiResponse: (data: any) => void;
+  mockApiResponse: (data: any, status?: number) => void;
   mockApiError: (message: string, status: number) => void;
   createMockEnvironmentalData: () => any;
   createMockUser: () => any;

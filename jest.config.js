@@ -1,27 +1,27 @@
 /** @type {import('jest').Config} */
 const config = {
-  // Test environment
+  // Use ts-jest as the test environment
+  preset: 'ts-jest',
   testEnvironment: 'jsdom',
   
   // Setup files
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   
-  // Use ts-jest for TypeScript files
-  preset: 'ts-jest/presets/js-with-ts',
-  
-  // Transform configuration
+  // Transform configuration - ONLY use ts-jest
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
-  
-  // TS-Jest configuration
-  globals: {
-    'ts-jest': {
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: {
         jsx: 'react-jsx',
+        esModuleInterop: true,
+        allowSyntheticDefaultImports: true,
       },
-    },
+    }],
   },
+  
+  // File extensions to treat as modules
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
+  
+  // Module name mapping
   moduleNameMapper: {
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/lib/(.*)$': '<rootDir>/lib/$1',
@@ -68,9 +68,6 @@ const config = {
     'json-summary'
   ],
   
-  // Module file extensions
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  
   // Test timeout
   testTimeout: 30000,
   
@@ -82,23 +79,6 @@ const config = {
   
   // Restore mocks after each test
   restoreMocks: true,
-  
-  // Projects for different test types
-  projects: [
-    {
-      displayName: 'unit',
-      testEnvironment: 'jsdom',
-      testMatch: ['<rootDir>/**/*.test.{js,jsx,ts,tsx}'],
-      testPathIgnorePatterns: ['/e2e/', '/integration/', '/node_modules/'],
-      setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
-    },
-    {
-      displayName: 'integration',
-      testEnvironment: 'jsdom',
-      testMatch: ['<rootDir>/tests/integration/**/*.test.{js,jsx,ts,tsx}'],
-      setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
-    }
-  ]
 };
 
 module.exports = config;
