@@ -1,0 +1,88 @@
+name: Greetings
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greet new contributors for Issues
+        if: github.event.issue && github.event.action == 'opened' && github.event.issue.author_association == 'FIRST_TIMER'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `
+👋 **Welcome to [EcoSentinel](https://github.com/${{ github.repository }})!**
+
+🎉 Thank you for opening your first issue! Our team and community will review your report soon.
+
+**About this project:**  
+AI-powered environmental intelligence platform for real-time monitoring & climate action.  
+[![TypeScript](https://img.shields.io/badge/language-TypeScript-blue)](https://www.typescriptlang.org/) [![IoT](https://img.shields.io/badge/IoT-enabled-brightgreen)](https://github.com/${{ github.repository }}) [![Quantum AI](https://img.shields.io/badge/Quantum%20AI-yes-purple)](https://github.com/${{ github.repository }})
+
+📚 Please check our [contribution guidelines](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md) and [code of conduct](https://github.com/${{ github.repository }}/blob/main/CODE_OF_CONDUCT.md).
+
+💡 For a quick start, view our [README](https://github.com/${{ github.repository }}/blob/main/README.md).
+
+**Next steps:**  
+- Our maintainers will triage your issue.  
+- Feel free to join discussions or suggest improvements!
+
+Happy contributing! 🌍🚀
+              `
+            })
+
+      - name: Greet new contributors for Pull Requests
+        if: github.event.pull_request && github.event.action == 'opened' && github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `
+🙌 **Thank you for your first Pull Request to [EcoSentinel](https://github.com/${{ github.repository }})!**
+
+We appreciate your contribution to advancing environmental intelligence with us.
+
+🔎 **What happens next:**  
+- Our team will review your PR for quality and relevance.
+- Make sure your code passes all [CI checks](https://github.com/${{ github.repository }}/actions).
+- Please ensure you've read our [Contributing Guide](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md).
+
+**Project highlights:**  
+- IoT & Satellite Data  
+- Quantum AI & Predictive Analytics  
+- Emergency Response Integration
+
+Stay tuned for feedback, and welcome to the community! 🌱🌏
+              `
+            })
+
+      - name: Greet on all other events
+        if: github.event_name == 'issues' && github.event.action == 'opened'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `
+👋 Thank you for your issue!  
+We value all reports, suggestions, and ideas to improve EcoSentinel.
+
+Please check our [README](https://github.com/${{ github.repository }}/blob/main/README.md) and [contribution guidelines](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md).
+
+Our team will respond soon. 🌐
+              `
+            })
