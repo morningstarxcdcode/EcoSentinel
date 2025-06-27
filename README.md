@@ -651,6 +651,43 @@ npm install
 
 ---
 
+## 🔒 **Advanced Security Suite**
+
+EcoSentinel implements **military-grade security** with comprehensive protection against modern threats:
+
+### **Security Features**
+- **🛡️ Zero Trust Architecture** with device trust verification
+- **🔐 Multi-Factor Authentication** (TOTP, SMS, Email, Biometric)
+- **🤖 AI-Powered Threat Detection** with behavioral analytics
+- **🔍 Advanced Penetration Testing** automation
+- **📊 Real-time Security Monitoring** with 24/7 SOC capabilities
+- **🏛️ Multi-Framework Compliance** (GDPR, SOC 2, ISO 27001, HIPAA)
+- **🔑 Hardware Security Module** (HSM) integration
+- **⚡ Advanced Rate Limiting** with intelligent throttling
+- **🌐 Web Application Firewall** with custom rules
+- **🛠️ Container Security** scanning and runtime protection
+
+### **Security Testing Automation**
+```bash
+# Run comprehensive security tests
+./scripts/security-testing.sh
+
+# Perform system hardening
+./scripts/security-hardening.sh
+
+# Monitor security continuously
+./scripts/security-monitor.sh
+```
+
+### **Compliance Certifications**
+- ✅ **GDPR** (General Data Protection Regulation)
+- ✅ **SOC 2 Type II** (Service Organization Control)
+- ✅ **ISO 27001** (Information Security Management)
+- ✅ **NIST Cybersecurity Framework**
+- ✅ **OWASP Top 10** Protection
+
+---
+
 ## 📄 **License**
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
